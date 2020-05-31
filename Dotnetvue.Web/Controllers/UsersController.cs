@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Dotnetvue.Web.Models;
+using Dotnetvue.Web.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Dotnetvue.Web.Controllers
 {
@@ -11,11 +9,23 @@ namespace Dotnetvue.Web.Controllers
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly ILogger<UsersController> _logger;
+        private IUserService _userService;
 
-        public UsersController(ILogger<UsersController> logger)
+        public UsersController(IUserService userService)
         {
-            _logger = logger;
+            _userService = userService;
+        }
+
+        [AllowAnonymous]
+        [HttpPost("auth")]
+        public IActionResult Authenticate([FromBody] AuthRequest model)
+        {
+            var response = _userService.Authenticate(model);
+
+            if (response == null)
+                return BadRequest(new { message = "Неверный логин или пароль" });
+
+            return Ok(response);
         }
     }
 }
