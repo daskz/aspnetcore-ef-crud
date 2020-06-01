@@ -9,6 +9,7 @@ using Dotnetvue.Web.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -40,21 +41,24 @@ namespace Dotnetvue.Web
 
             ConfigureJwtAuth(services, optionsSection.Get<AppOptions>());
 
+            services.AddHttpContextAccessor();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IFinanceService, FinanceService>();
+            services.AddScoped<IRequestNumberProvider, RequestNumberProvider>();
         }
 
         private static void ConfigureJwtAuth(IServiceCollection services, AppOptions options)
         {
-            services.AddAuthentication(x =>
+            services.AddAuthentication(authOptions =>
                 {
-                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    authOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-                .AddJwtBearer(x =>
+                .AddJwtBearer(jwtBearerOptions =>
                 {
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters
+                    jwtBearerOptions.RequireHttpsMetadata = false;
+                    jwtBearerOptions.SaveToken = true;
+                    jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(options.JwtSecretKey)),
@@ -79,6 +83,7 @@ namespace Dotnetvue.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -89,7 +94,8 @@ namespace Dotnetvue.Web
 
         private static void SeedUsersToDatabase(IUserService userService)
         {
-            userService.Create(new User {Username = "test"}, "test");
+            userService.Create(new User {Id = Guid.Parse("6F85E76A-6324-433A-AF4E-1FE4D9480B2C"), Username = "johndoe"}, "johndoe");
+            userService.Create(new User { Id = Guid.Parse("A6F61045-9E1E-46BF-A56E-16E123B325B8"), Username = "johnsmith" }, "johnsmith");
         }
     }
 }
