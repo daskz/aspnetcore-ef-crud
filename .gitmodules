@@ -1,0 +1,3 @@
+[submodule "Dotnetvue.Web/ClientApp"]
+	path = Dotnetvue.Web/ClientApp
+	url = https://github.com/daskz/vue-jwt-crud
