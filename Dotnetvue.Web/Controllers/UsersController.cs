@@ -23,7 +23,7 @@ namespace Dotnetvue.Web.Controllers
             var response = _userService.Authenticate(model);
 
             if (response == null)
-                return BadRequest(new { message = "Неверный логин или пароль" });
+                return BadRequest(new MessageResponse("Неверный логин или пароль"));
 
             return Ok(response);
         }

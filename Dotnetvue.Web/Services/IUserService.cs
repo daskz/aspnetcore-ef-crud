@@ -7,5 +7,6 @@ namespace Dotnetvue.Web.Services
     {
         AuthResponse Authenticate(AuthRequest request);
         User Create(User user, string password);
+        User GetCurrentUser();
     }
 }

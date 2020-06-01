@@ -7,6 +7,7 @@ using System.Text;
 using Dotnetvue.Data;
 using Dotnetvue.Data.Models;
 using Dotnetvue.Web.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -15,12 +16,19 @@ namespace Dotnetvue.Web.Services
     public class UserService : IUserService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IOptions<AppOptions> _options;
 
-        public UserService(ApplicationDbContext context, IOptions<AppOptions> options)
+        public UserService(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, IOptions<AppOptions> options)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
             _options = options;
+        }
+
+        public User GetCurrentUser()
+        {
+            return Guid.TryParse(_httpContextAccessor.HttpContext.User.Identity.Name, out var userId) ? _context.Users.SingleOrDefault(u => u.Id == userId) : null;
         }
 
         public AuthResponse Authenticate(AuthRequest request)
@@ -28,7 +36,7 @@ namespace Dotnetvue.Web.Services
             if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
                 return null;
 
-            var user = _context.Users.SingleOrDefault(x => x.Username == request.Username);
+            var user = _context.Users.SingleOrDefault(x => x.Username.ToUpper().Equals(request.Username.ToUpper()));
 
             if (user == null)
                 return null;
