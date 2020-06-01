@@ -8,6 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["Dotnetvue.Web/Dotnetvue.Web.csproj", "Dotnetvue.Web/"]
+COPY ["Dotnetvue.Data/Dotnetvue.Data.csproj", "Dotnetvue.Data/"]
 RUN dotnet restore "Dotnetvue.Web/Dotnetvue.Web.csproj"
 COPY . .
 WORKDIR "/src/Dotnetvue.Web"
