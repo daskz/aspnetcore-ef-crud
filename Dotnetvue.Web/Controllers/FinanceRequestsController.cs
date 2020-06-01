@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dotnetvue.Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     [Authorize]
     public class FinanceRequestsController : ControllerBase

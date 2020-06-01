@@ -68,8 +68,6 @@ namespace Dotnetvue.Web
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
             app.UseCors();
             app.UseAuthentication();
