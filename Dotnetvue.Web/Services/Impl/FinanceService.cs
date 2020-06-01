@@ -5,7 +5,7 @@ using Dotnetvue.Data;
 using Dotnetvue.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Dotnetvue.Web.Services
+namespace Dotnetvue.Web.Services.Impl
 {
     public class FinanceService : IFinanceService
     {

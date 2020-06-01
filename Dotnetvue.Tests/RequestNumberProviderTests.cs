@@ -1,6 +1,7 @@
 using System;
 using Dotnetvue.Data.Models;
 using Dotnetvue.Web.Services;
+using Dotnetvue.Web.Services.Impl;
 using Xunit;
 
 namespace Dotnetvue.Tests

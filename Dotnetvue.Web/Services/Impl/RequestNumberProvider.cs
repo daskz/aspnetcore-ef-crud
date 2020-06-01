@@ -1,7 +1,7 @@
 ﻿using System;
 using Dotnetvue.Data.Models;
 
-namespace Dotnetvue.Web.Services
+namespace Dotnetvue.Web.Services.Impl
 {
     public class RequestNumberProvider : IRequestNumberProvider
     {
