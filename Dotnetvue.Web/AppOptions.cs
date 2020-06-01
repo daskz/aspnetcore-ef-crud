@@ -8,5 +8,7 @@ namespace Dotnetvue.Web
     public class AppOptions
     {
         public string JwtSecretKey { get; set; }
+
+        public string HostDomain { get; set; }
     }
 }
